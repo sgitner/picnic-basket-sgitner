@@ -1,21 +1,54 @@
 function checkAnswer () {
+    dingForIncorrect = true
     for (let index = 0; index <= 4; index++) {
         if (textList[index] == userAnswer) {
             correctAnswerValue += 1
             game.splash("Correct")
             game.splash("Your score is:", correctAnswerValue)
+            dingForIncorrect = false
         }
     }
-    if (false) {
-        correctAnswerValue += -1
+    if (dingForIncorrect == true) {
+        incorrectAnswerValue += 1
         game.splash("Incorrect")
         game.splash("Your score is:", correctAnswerValue)
     }
-    game.reset()
 }
-let correctAnswerValue = 0
+function playGame () {
+    for (let index = 0; index <= 4; index++) {
+        picnicFood.setImage(imageList[index])
+        pause(100)
+    }
+    picnicFood.setImage(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `)
+    pause(500)
+    game.splash("What was one item that was in Yogi's basket?")
+    userAnswer = game.askForString("", 5)
+    checkAnswer()
+}
 let userAnswer = ""
+let dingForIncorrect = false
+let incorrectAnswerValue = 0
+let correctAnswerValue = 0
 let textList: string[] = []
+let imageList: Image[] = []
+let picnicFood: Sprite = null
 scene.setBackgroundImage(img`
     2222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333
     2222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333
@@ -138,7 +171,7 @@ scene.setBackgroundImage(img`
     3333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222
     3333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222333332222233333222223333322222
     `)
-let picnicFood = sprites.create(img`
+picnicFood = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -174,7 +207,7 @@ picnicFood.setImage(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     `)
-let imageList = [
+imageList = [
 img`
     .............beebbbb............
     ............eebbbb4bb...........
@@ -337,13 +370,10 @@ textList = [
 "cake",
 "apple"
 ]
-for (let index = 0; index <= 4; index++) {
-    picnicFood.setImage(imageList[index])
-    pause(100)
-}
-picnicFood.destroy()
-pause(500)
-game.splash("What was one item that was in Yogi's basket?")
-userAnswer = game.askForString("", 5)
 correctAnswerValue = 0
-checkAnswer()
+for (let index = 0; index < 5; index++) {
+    playGame()
+}
+game.splash("Number of Incorrect:", incorrectAnswerValue)
+game.splash("Number of Correct:", correctAnswerValue)
+game.splash("Game Over")
